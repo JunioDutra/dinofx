@@ -12,8 +12,8 @@ import br.com.engine.core.Scene;
 import br.com.engine.core.Vector2;
 import br.com.engine.input.KeyBoard;
 import br.com.game.script.AndarEmTile;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
+import br.com.engine.graphics.Color;
+import br.com.engine.input.KeyCode;
 
 
 public class Level001 extends Scene

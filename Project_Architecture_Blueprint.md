@@ -6,8 +6,8 @@ Generated: 2026-06-02
 
 ### Technology Stack
 
-- Java 8 application built with Maven
-- JavaFX runtime integration through `javafx-maven-plugin`
+- Java 25 application built with Maven
+- Desktop runtime delegated to `enginefx` Swing/Java2D bootstrap
 - External game engine dependency: `enginefx:enginefx:1.0.0`
 - Fat-jar packaging through `maven-shade-plugin`
 - Resource-driven runtime configuration through `src/main/resources/application.json`
@@ -380,7 +380,7 @@ There is currently no automated test suite under `src/test`.
 Effective testing strategy for this architecture would be:
 
 - compile checks with `mvn compile`
-- runtime smoke checks with `mvn javafx:run`
+- runtime smoke checks with `java -jar target/dino.jar`
 - manual validation per scene after changing input, assets, or collision behavior
 
 Testing blind spots in the current architecture:
@@ -396,7 +396,7 @@ Deployment is local desktop packaging rather than distributed deployment.
 
 Observed model:
 
-- development run: `mvn javafx:run`
+- development run: `java -jar target/dino.jar`
 - packaged build: `mvn package`
 - distribution artifact: `target/dino.jar`
 - execution: `java -jar target/dino.jar`
@@ -579,7 +579,7 @@ For a new gameplay feature:
 4. Wire the new `GameObject` composition in `setup()`
 5. Implement per-frame logic in `update(long time)` or a script component
 6. Run `mvn compile`
-7. Run the affected scene through `mvn javafx:run` and manually verify behavior
+7. Run the affected scene through `java -jar target/dino.jar` and manually verify behavior
 
 ### Placement Guide
 

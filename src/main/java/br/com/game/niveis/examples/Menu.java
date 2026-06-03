@@ -11,8 +11,8 @@ import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
 import br.com.engine.core.annotation.Bootable;
 import br.com.engine.input.KeyBoard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
+import br.com.engine.graphics.Color;
+import br.com.engine.input.KeyCode;
 
 @Bootable
 public class Menu extends Scene {

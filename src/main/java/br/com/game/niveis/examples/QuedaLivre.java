@@ -12,8 +12,8 @@ import br.com.engine.core.Vector2;
 import br.com.engine.fisica.Colisao;
 import br.com.engine.input.KeyBoard;
 import br.com.engine.interfaces.CubeColisor;
-import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
+import br.com.engine.geometry.Rectangle;
+import br.com.engine.input.KeyCode;
 
 public class QuedaLivre extends Scene
 {

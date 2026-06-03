@@ -4,7 +4,7 @@ import br.com.engine.componentes.drawable.TmxMap;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
 import br.com.engine.input.KeyBoard;
-import javafx.scene.input.KeyCode;
+import br.com.engine.input.KeyCode;
 
 public class TiledMapGame extends Scene {
 

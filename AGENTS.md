@@ -10,7 +10,7 @@ For a deeper architectural reference, see [Project_Architecture_Blueprint.md](Pr
 
 - Build sources: `mvn compile`
 - Package shaded jar: `mvn package`
-- Run in development: `mvn javafx:run`
+- Run packaged jar: `java -jar target/dino.jar`
 - Run packaged jar: `java -jar target/dino.jar`
 - Tests: `mvn test` is valid but there is currently no `src/test` tree
 
@@ -36,4 +36,4 @@ For a deeper architectural reference, see [Project_Architecture_Blueprint.md](Pr
 
 - Prefer small edits in the owning scene or script class instead of changing unrelated engine bootstrapping.
 - If a change touches gameplay assets or TMX maps, verify the referenced resource exists under `src/main/resources` and that the resource name matches exactly.
-- Keep validation narrow: use `mvn compile` for code changes and `mvn javafx:run` when a runtime behavior check is needed.
+- Keep validation narrow: use `mvn compile` for code changes and `java -jar target/dino.jar` when a runtime behavior check is needed.

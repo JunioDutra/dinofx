@@ -9,7 +9,7 @@ import br.com.engine.core.Vector2;
 import br.com.engine.input.KeyBoard;
 import br.com.engine.input.Mouse;
 import br.com.game.script.AndarEmTile;
-import javafx.scene.input.KeyCode;
+import br.com.engine.input.KeyCode;
 
 
 public class Level002 extends Scene
