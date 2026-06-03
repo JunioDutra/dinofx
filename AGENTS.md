@@ -10,8 +10,7 @@ For a deeper architectural reference, see [Project_Architecture_Blueprint.md](Pr
 
 - Build sources: `mvn compile`
 - Package shaded jar: `mvn package`
-- Run packaged jar: `java -jar target/dino.jar`
-- Run packaged jar: `java -jar target/dino.jar`
+- Run packaged jar: `java --enable-native-access=ALL-UNNAMED -jar target/dino.jar` (the flag silences LWJGL/Vulkan native-access warnings on Java 25)
 - Tests: `mvn test` is valid but there is currently no `src/test` tree
 
 ## Control Surface
@@ -30,6 +29,10 @@ For a deeper architectural reference, see [Project_Architecture_Blueprint.md](Pr
 - Treat `src/main/resources` as the source of truth for maps, audio, fonts, and images. Do not edit generated files under `target/`.
 - When adding, removing, or reordering scenes, update both the `scenes` array in `application.json` and the hardcoded menu entries in `Menu.java`. The menu uses `ControleBase.getInstance().nextScene(current)`, so menu order and config order must stay aligned.
 - Scene behavior is typically implemented in `Scene.setup()` and `Scene.update(long time)`. Follow the existing style in neighboring scene classes instead of introducing a new application structure.
+- The engine rebuilds a fresh scene instance on every switch, so scene fields do not persist across visits. Put per-visit initialization in `setup()`.
+- The engine frame loop is uncapped. Scale movement by `Time.getDeltaTime()` (pixels per second), as `Spaceship` and `Level002` do; fixed pixels-per-frame movement runs too fast at high frame rates.
+- Sprite sheets must be a uniform grid for `new Sprite(name, cx, cy)`. Use uniform assets (for example `Sonic_anim.png`); non-uniform sheets drift and clip.
+- TMX `<image source>` paths must be relative to `src/main/resources` (for example `../imagens/...`), never absolute machine paths, or the map fails to load at runtime.
 - Custom reusable behavior belongs under `src/main/java/br/com/game/script` and is attached to `GameObject` instances from scene classes.
 
 ## Editing Guidance

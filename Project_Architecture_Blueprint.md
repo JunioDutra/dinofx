@@ -1,15 +1,15 @@
 # Project Architecture Blueprint
 
-Generated: 2026-06-02
+Generated: 2026-06-02. Updated: 2026-06-03.
 
 ## 1. Architecture Detection And Analysis
 
 ### Technology Stack
 
 - Java 25 application built with Maven
-- Desktop runtime delegated to `enginefx` Swing/Java2D bootstrap
+- Desktop runtime delegated to `enginefx` (LWJGL Vulkan + GLFW backend)
 - External game engine dependency: `enginefx:enginefx:1.0.0`
-- Fat-jar packaging through `maven-shade-plugin`
+- Fat-jar packaging through `maven-shade-plugin` (produces `target/dino.jar`)
 - Resource-driven runtime configuration through `src/main/resources/application.json`
 
 Primary build configuration lives in [pom.xml](pom.xml).
@@ -150,6 +150,11 @@ Interaction pattern:
 - scenes call `super.setup()` and `super.update(time)` first
 - scenes query engine singletons such as `KeyBoard` and `ControleBase`
 - scenes look up child objects and components directly
+- gameplay scenes bind ESC to `ControleBase.getInstance().goToBootScene()` to return to the `Menu`
+
+Scene lifecycle note:
+
+- The engine rebuilds a fresh scene instance on every switch and resets the graphics transform, so scene fields do not persist across visits. Initialize per-visit state in `setup()` rather than assuming a previous run's fields survive. The camera offset from a prior scene does not leak into the next one.
 
 Evolution pattern:
 
@@ -172,6 +177,18 @@ Patterns in use:
 - `ScriptBuilder` lambdas for scene-local behavior
 
 This produces a compact composition model, but it also means dependencies are discovered at runtime rather than enforced statically.
+
+Sprite sheet constraint:
+
+- The engine `Sprite(name, cx, cy)` slices a sheet into a **uniform** `cx` by `cy` grid. Sheets must have equal-size frames, or the animation drifts and clips. For example, `Sonic_anim.png` is a repacked uniform grid used by `Level002`; the original `Sonic.png` had unequal frame heights and could not be sliced directly.
+
+### Frame-Rate Independence (Delta Time)
+
+The engine main loop is uncapped, and timing is exposed through `br.com.engine.core.Time`. Movement must be scaled by `Time.getDeltaTime()` (seconds) so speed is expressed in pixels per second and stays consistent across frame rates.
+
+- `Spaceship` uses per-second velocities (player, obstacles, bullets) multiplied by `Time.getDeltaTime()`.
+- `Level002` scales camera movement by `Time.getDeltaTime()` (about 600 px/s).
+- Fixed pixels-per-frame movement is now a bug: it runs faster at higher frame rates. Convert any remaining frame-tied scene the same way.
 
 ### Script Layer
 
@@ -380,15 +397,15 @@ There is currently no automated test suite under `src/test`.
 Effective testing strategy for this architecture would be:
 
 - compile checks with `mvn compile`
-- runtime smoke checks with `java -jar target/dino.jar`
+- runtime smoke checks with `java --enable-native-access=ALL-UNNAMED -jar target/dino.jar`
 - manual validation per scene after changing input, assets, or collision behavior
 
 Testing blind spots in the current architecture:
 
 - scene order correctness
-- resource name correctness
+- resource name correctness (including TMX `<image source>` paths, which must be relative to `src/main/resources`, not absolute machine paths)
 - collision and animation regressions
-- camera and map behavior
+- camera and map behavior, and frame-rate independence of movement
 
 ## 12. Deployment Architecture
 
@@ -396,8 +413,8 @@ Deployment is local desktop packaging rather than distributed deployment.
 
 Observed model:
 
-- development run: `java -jar target/dino.jar`
-- packaged build: `mvn package`
+- development run: `java --enable-native-access=ALL-UNNAMED -jar target/dino.jar` (the native-access flag avoids LWJGL/Vulkan warnings on Java 25)
+- packaged build: `mvn package` (produces the shaded `target/dino.jar`)
 - distribution artifact: `target/dino.jar`
 - execution: `java -jar target/dino.jar`
 
