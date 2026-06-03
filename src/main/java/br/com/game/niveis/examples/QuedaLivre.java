@@ -6,6 +6,7 @@ import java.util.Map;
 
 import br.com.engine.componentes.builders.Colisors;
 import br.com.engine.componentes.drawable.Cube;
+import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
 import br.com.engine.core.Vector2;
@@ -87,6 +88,8 @@ public class QuedaLivre extends Scene
 	public void update( long time )
 	{
 		super.update( time );
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 		
 		//fisica para cair
 		float tempo = (time / 1000f);

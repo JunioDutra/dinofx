@@ -12,6 +12,7 @@ import br.com.engine.componentes.scripts.Animator.AnimationType;
 import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
+import br.com.engine.core.Time;
 import br.com.engine.core.Vector2;
 import br.com.engine.input.KeyBoard;
 import br.com.engine.interfaces.CubeColisor;
@@ -24,10 +25,14 @@ public class Spaceship extends Scene
 	
 	GameObject player;
 		
-	Vector2 velX = new Vector2( 3, 0 );
-	Vector2 velY = new Vector2( 0, 3 );
+	// Velocidades em pixels por segundo; escaladas por Time.getDeltaTime()
+	// para ficarem independentes da taxa de quadros.
+	Vector2 velX = new Vector2( 180, 0 );
+	Vector2 velY = new Vector2( 0, 180 );
 	
-	Vector2 velXObs = new Vector2( 0, 5 );
+	Vector2 velXObs = new Vector2( 0, 240 );
+	
+	float velTiro = 300;
 	
 	Random random = new Random( );
 
@@ -81,7 +86,7 @@ public class Spaceship extends Scene
 
 	private void criarOBS( )
 	{
-		Vector2 velXObs = new Vector2( this.velXObs.x, random.nextInt( (int)this.velXObs.y ) + 1 );
+		Vector2 velXObs = new Vector2( this.velXObs.x, random.nextInt( (int)this.velXObs.y ) + 60 );
 		
 		GameObject obs = new GameObject("Obs"+(ObsId++));
 		obs.addComponente( new Sprite( "enyme" ) );
@@ -101,7 +106,7 @@ public class Spaceship extends Scene
 				criarOBS( );
 			}
 			
-			obs.getPosition( ).plus( velXObs );
+			obs.getPosition( ).plus( velXObs.x * Time.getDeltaTime( ), velXObs.y * Time.getDeltaTime( ) );
 		} ) );
 		
 		obs.addComponente( Colisors.simpleSprite( obs.getTag( ) ) );
@@ -115,10 +120,10 @@ public class Spaceship extends Scene
 		player.addComponente( new Sprite( "nave" ) );
 				
 		player.addComponente( ScriptBuilder.createNoTime( ( ) -> {
-			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.RIGHT, ( ) -> player.getPosition( ).plus( velX ) );
-			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.LEFT,  ( ) -> player.getPosition( ).less( velX ) );
-			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.DOWN,  ( ) -> player.getPosition( ).plus( velY ) );
-			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.UP,    ( ) -> player.getPosition( ).less( velY ) );
+			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.RIGHT, ( ) -> player.getPosition( ).plus( velX.x * Time.getDeltaTime( ), 0f ) );
+			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.LEFT,  ( ) -> player.getPosition( ).less( velX.x * Time.getDeltaTime( ), 0f ) );
+			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.DOWN,  ( ) -> player.getPosition( ).plus( 0f, velY.y * Time.getDeltaTime( ) ) );
+			KeyBoard.infInstace( ).ifKeyPressed( KeyCode.UP,    ( ) -> player.getPosition( ).less( 0f, velY.y * Time.getDeltaTime( ) ) );
 		} ) );
 		
 		player.addComponente( ScriptBuilder.createNoTime( ( ) -> {
@@ -157,7 +162,7 @@ public class Spaceship extends Scene
 		tiro.getPosition( ).setPosition( player.getPosition().x, player.getPosition().y );
 		
 		tiro.addComponente( ScriptBuilder.create( time -> {
-			tiro.getPosition( ).less( 0, 5 );
+			tiro.getPosition( ).less( 0f, velTiro * Time.getDeltaTime( ) );
 		} ) );
 		
 		CubeColisor cube = Colisors.simpleSprite( "bullet" );
@@ -192,6 +197,8 @@ public class Spaceship extends Scene
 	public void update( long time )
 	{
 		super.update( time );
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 		
 		tempoUltimoTiro += time;
 	}

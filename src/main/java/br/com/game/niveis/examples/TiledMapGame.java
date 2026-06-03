@@ -1,6 +1,7 @@
 package br.com.game.niveis.examples;
 
 import br.com.engine.componentes.drawable.TmxMap;
+import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
 import br.com.engine.input.KeyBoard;
@@ -23,6 +24,8 @@ public class TiledMapGame extends Scene {
     @Override
     public void update(long time) {
         super.update(time);
+
+        KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 
         KeyBoard.infInstace().ifKeyPressed( KeyCode.D, ()-> 
 			getObject("default_camera").getPosition().plus(velocidadeCamera, 0f) );

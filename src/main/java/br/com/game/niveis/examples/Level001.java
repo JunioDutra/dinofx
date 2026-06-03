@@ -7,6 +7,7 @@ import br.com.engine.componentes.builders.SpriteFontBuilder;
 import br.com.engine.componentes.drawable.Sprite;
 import br.com.engine.componentes.drawable.SpriteFont;
 import br.com.engine.componentes.scripts.Animator;
+import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
 import br.com.engine.core.Vector2;
@@ -83,6 +84,8 @@ public class Level001 extends Scene
 	public void update(long time) 
 	{
 		super.update(time);
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 		
 		if( play )
 		{

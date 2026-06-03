@@ -3,8 +3,10 @@ package br.com.game.niveis.examples;
 import br.com.engine.componentes.drawable.Sprite;
 import br.com.engine.componentes.drawable.TmxMap;
 import br.com.engine.componentes.scripts.Animator;
+import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
+import br.com.engine.core.Time;
 import br.com.engine.core.Vector2;
 import br.com.engine.input.KeyBoard;
 import br.com.engine.input.Mouse;
@@ -64,12 +66,12 @@ public class Level002 extends Scene
 	private void criarJogador( )
 	{
 		Animator anim = new Animator( 100 );
-		anim.createAnimation( "run", 0, 3 );
-		anim.createAnimation( "stop", 1, 1 );
+		anim.createAnimation( "run", 0, 5 );
+		anim.createAnimation( "stop", 0, 1 );
 		anim.execute( "stop" );
 		
 		player = new GameObject( "player" );
-		player.addComponente( new Sprite( "hero_sheet", 2 , 2 ) );
+		player.addComponente( new Sprite( "Sonic_anim", 1 , 5 ) );
 		player.addComponente( anim );
 		player.addComponente( new AndarEmTile( ) );
 		player.getPosition().setPosition(354.0f, 336.5f);
@@ -82,6 +84,8 @@ public class Level002 extends Scene
 	public void update(long time) 
 	{
 		super.update(time);
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 		
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.DOWN, ()->{
 			if( timeElapsed > timeLimit )
@@ -115,7 +119,9 @@ public class Level002 extends Scene
 			}
 		});
 		
-		float velocidadeCamera = 10;
+		// Velocidade em pixels por segundo; escalada pelo delta time para ficar
+		// independente da taxa de quadros (movimento liso em qualquer FPS).
+		float velocidadeCamera = 600f * Time.getDeltaTime( );
 
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.D, ()-> 
 			getObject("default_camera").getPosition().plus(velocidadeCamera, 0f) );
