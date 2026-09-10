@@ -18,15 +18,15 @@ public class Level002 extends Scene
 {
 	GameObject mapa;
 	GameObject player;
-	
+
 	long timeElapsed;
 	long timeLimit = 100;
-	
-	int xAtu = 5; 
+
+	int xAtu = 5;
 	int yAtu = 5;
-	
-	final private Vector2 velocidade = new Vector2( 10f, 10f );
-	
+
+	final private Vector2 velocidade = new Vector2( 600f, 600f );
+
 	@Override
 	public void setup( )
 	{
@@ -34,32 +34,32 @@ public class Level002 extends Scene
 
 		criarMapa( );
 		criarJogador( );
-		
+
 		GameObject camera = getObject("default_camera");
-		
-		Mouse.infInstace().addListener( event ->{
+
+		Mouse.infInstace().addListener( this, event ->{
 			float valX = camera.getPosition().getX( );
 			valX = valX < 0 ? valX * -1 : valX;
-			
+
 			float valY = camera.getPosition().getX( );
 			valY = valY < 0 ? valY * -1 : valY;
-			
-			System.out.println( "Location: " + ( event.getX( ) - valX ) 
+
+			System.out.println( "Location: " + ( event.getX( ) - valX )
 				+ ", " + ( event.getY( ) - valY ) );
-			
+
 			System.out.println( "Scene: " + event.getSceneX( ) + ", "+ event.getSceneY( ) );
 		});
 	}
-	
+
 	private void criarMapa( )
 	{
 		mapa = new GameObject( "mapa" );
 
-		TmxMap mapinha = new TmxMap( "ola_mapa" );
+		TmxMap mapinha = new TmxMap( "mapas/ola_mapa.tmx" );
 		Mapa tile_map = new Mapa( 512/10, 512/10, 1280, 1280 );
 		mapa.addComponente( tile_map );
 		mapa.addComponente(mapinha);
-		
+
 		add( mapa );
 	}
 
@@ -69,24 +69,24 @@ public class Level002 extends Scene
 		anim.createAnimation( "run", 0, 5 );
 		anim.createAnimation( "stop", 0, 1 );
 		anim.execute( "stop" );
-		
+
 		player = new GameObject( "player" );
-		player.addComponente( new Sprite( "Sonic_anim", 1 , 5 ) );
+		player.addComponente( new Sprite( "imagens/Sonic_anim.png", 1 , 5 ) );
 		player.addComponente( anim );
 		player.addComponente( new AndarEmTile( ) );
 		player.getPosition().setPosition(354.0f, 336.5f);
 		add( player );
-		
+
 		getObject("default_camera").setPai(player);
 	}
-	
+
 	@Override
-	public void update(long time) 
+	public void update(long time)
 	{
 		super.update(time);
 
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
-		
+
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.DOWN, ()->{
 			if( timeElapsed > timeLimit )
 			{
@@ -94,7 +94,7 @@ public class Level002 extends Scene
 				timeElapsed = 0;
 			}
 		});
-		
+
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.UP, ()->{
 			if( timeElapsed > timeLimit )
 			{
@@ -102,7 +102,7 @@ public class Level002 extends Scene
 				timeElapsed = 0;
 			}
 		});
-		
+
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.RIGHT, ()->{
 			if( timeElapsed > timeLimit )
 			{
@@ -110,7 +110,7 @@ public class Level002 extends Scene
 				timeElapsed = 0;
 			}
 		});
-		
+
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.LEFT, ()->{
 			if( timeElapsed > timeLimit )
 			{
@@ -118,30 +118,30 @@ public class Level002 extends Scene
 				timeElapsed = 0;
 			}
 		});
-		
+
 		// Velocidade em pixels por segundo; escalada pelo delta time para ficar
 		// independente da taxa de quadros (movimento liso em qualquer FPS).
 		float velocidadeCamera = 600f * Time.getDeltaTime( );
 
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.D, ()-> 
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.D, ()->
 			getObject("default_camera").getPosition().plus(velocidadeCamera, 0f) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.A, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.A, ()->
 			getObject("default_camera").getPosition().less(velocidadeCamera, 0f) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.W, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.W, ()->
 			getObject("default_camera").getPosition().less(0f, velocidadeCamera) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.S, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.S, ()->
 			getObject("default_camera").getPosition().plus(0f, velocidadeCamera) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.SPACE, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.SPACE, ()->
 			getObject("default_camera").getPosition().setPosition(0f, 0f) );
-		
+
 		Vector2 to = mapa.getComponent( Mapa.class ).calcularTile( player, xAtu, yAtu );
-		
+
 		player.getComponent( AndarEmTile.class ).mover( to, velocidade );
-		
+
 		if( !player.getPosition().equals( to ) )
 		{
 			player.getComponent( Animator.class ).execute( "run" );
@@ -150,17 +150,17 @@ public class Level002 extends Scene
 		{
 			player.getComponent( Animator.class ).execute( "stop" );
 		}
-		
+
 		timeElapsed += time;
 	}
-	
+
 	private int incrementa( int eixo, int incremento, int limite, boolean menor )
 	{
 		if( (menor && eixo < limite) || (!menor && eixo > limite) )
 		{
 			return eixo + incremento;
 		}
-		
+
 		return eixo;
 	}
 }

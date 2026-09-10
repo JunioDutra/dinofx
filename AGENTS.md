@@ -1,42 +1,43 @@
-# AGENTS.md
+# Orientações para trabalhar no dinofx
 
-## Project Scope
+## Escopo
 
-This repository is a small Maven-based Java game that runs on the `enginefx` library. Most gameplay behavior lives in scene classes under `src/main/java/br/com/game/niveis/examples`, while startup and scene registration are driven by `src/main/resources/application.json`.
+Jogo de exemplos que consome `enginefx:enginefx:2.0.0`. Leia [README.md](README.md), [BluePrint.md](BluePrint.md), [PRD.md](PRD.md) e [REVIEW.md](REVIEW.md).
 
-For a deeper architectural reference, see [Project_Architecture_Blueprint.md](Project_Architecture_Blueprint.md).
+O ponto de entrada [Main.java](src/main/java/br/com/game/Main.java) apenas chama `Executor.loadGame(args)`. Comportamento de inicialização é definido por [application.json](src/main/resources/application.json) e pelas cenas.
 
-## Build And Run
+## Build e validação
 
-- Build sources: `mvn compile`
-- Package shaded jar: `mvn package`
-- Run packaged jar: `java --enable-native-access=ALL-UNNAMED -jar target/dino.jar` (the flag silences LWJGL/Vulkan native-access warnings on Java 25)
-- Tests: `mvn test` is valid but there is currently no `src/test` tree
+- JDK 25+, Maven Wrapper; configuração atual de nativos para Windows x64.
+- `.\build.ps1` instala o checkout irmão da engine e empacota o jogo.
+- `.\mvnw.cmd test` executa JUnit em `src/test/java`.
+- `.\build.ps1 -Smoke -PresentMode fifo` valida o JAR em pasta vazia e janela oculta.
+- Testes unitários não substituem o smoke; o smoke não substitui gameplay manual, goldens ou validação de driver.
+- Fontes Java existentes usam `windows-1252` no POM. Preserve encoding; documentação é UTF-8.
+- Não edite arquivos gerados em `target/`. Assets têm como fonte de verdade `src/main/resources/`.
 
-## Control Surface
+## Convenções
 
-- Maven entrypoint and packaging: [pom.xml](pom.xml)
-- Java entrypoint: [src/main/java/br/com/game/Main.java](src/main/java/br/com/game/Main.java)
-- Runtime config and scene list: [src/main/resources/application.json](src/main/resources/application.json)
-- Boot scene and scene selector menu: [src/main/java/br/com/game/niveis/examples/Menu.java](src/main/java/br/com/game/niveis/examples/Menu.java)
-- Example custom script: [src/main/java/br/com/game/script/AndarEmTile.java](src/main/java/br/com/game/script/AndarEmTile.java)
+- Preserve nomes de pacotes e diretórios, inclusive `niveis`, `mapas`, `imagens` e `mensages`.
+- Cenas extendem `Scene`; comportamento reutilizável fica em `br.com.game.script`.
+- O menu deriva automaticamente de `application.json`. `menu: false` oculta a entrada sem mudar o índice de destino da cena. Não mantenha uma segunda lista fixa.
+- A engine cria uma nova instância por visita. Inicialize estado da cena no setup e não dependa de campos preservados entre visitas.
+- Use `add/remove/clearScene` e `addComponente`; as listas públicas são de leitura.
+- Use `Time.getDeltaTime()` no update variável e o argumento de `fixedUpdate(float)` para física. `AndarEmTile.mover` recebe velocidades em pixels/segundo.
+- Mouse exige dono: `Mouse.infInstace().addListener(this, callback)`. O descarte da cena libera a inscrição; não adicione limpeza global de input.
+- Spritesheets devem ter grade uniforme. `Sprite(name, cx, cy)` espera colunas/linhas compatíveis com a imagem.
+- Todo recurso usa caminho relativo exato com extensão. Não use nome base, caminho absoluto ou raiz dependente da máquina.
+- O caminho `image source` do TMX é relativo ao mapa. Flags de flip/rotação e funcionalidades não implementadas devem falhar explicitamente.
+- Evite dependências diretas de janela/dispositivo Vulkan em gameplay. O harness em `src/test` pode acessar o backend para verificações de integração.
 
-`Main` only delegates to `Executor.loadGame(args)`. If behavior changes at startup, inspect `application.json` and the scene classes before changing `Main`.
+## Onde alterar
 
-## Conventions That Matter
+| Comportamento | Arquivo/pasta |
+| --- | --- |
+| Metadados e ordem de cenas | [application.json](src/main/resources/application.json) |
+| Seleção e navegação | [Menu.java](src/main/java/br/com/game/niveis/examples/Menu.java) |
+| Movimento em tiles | [AndarEmTile.java](src/main/java/br/com/game/script/AndarEmTile.java) |
+| Exemplos de gameplay | `src/main/java/br/com/game/niveis/examples/` |
+| Smoke GPU/JAR | [GameMigrationSmokeApp.java](src/test/java/br/com/game/GameMigrationSmokeApp.java) |
 
-- Preserve the existing package and asset naming, including Portuguese directory names such as `niveis`, `mapas`, `imagens`, and `mensages`.
-- Treat `src/main/resources` as the source of truth for maps, audio, fonts, and images. Do not edit generated files under `target/`.
-- When adding, removing, or reordering scenes, update both the `scenes` array in `application.json` and the hardcoded menu entries in `Menu.java`. The menu uses `ControleBase.getInstance().nextScene(current)`, so menu order and config order must stay aligned.
-- Scene behavior is typically implemented in `Scene.setup()` and `Scene.update(long time)`. Follow the existing style in neighboring scene classes instead of introducing a new application structure.
-- The engine rebuilds a fresh scene instance on every switch, so scene fields do not persist across visits. Put per-visit initialization in `setup()`.
-- The engine frame loop is uncapped. Scale movement by `Time.getDeltaTime()` (pixels per second), as `Spaceship` and `Level002` do; fixed pixels-per-frame movement runs too fast at high frame rates.
-- Sprite sheets must be a uniform grid for `new Sprite(name, cx, cy)`. Use uniform assets (for example `Sonic_anim.png`); non-uniform sheets drift and clip.
-- TMX `<image source>` paths must be relative to `src/main/resources` (for example `../imagens/...`), never absolute machine paths, or the map fails to load at runtime.
-- Custom reusable behavior belongs under `src/main/java/br/com/game/script` and is attached to `GameObject` instances from scene classes.
-
-## Editing Guidance
-
-- Prefer small edits in the owning scene or script class instead of changing unrelated engine bootstrapping.
-- If a change touches gameplay assets or TMX maps, verify the referenced resource exists under `src/main/resources` and that the resource name matches exactly.
-- Keep validation narrow: use `mvn compile` for code changes and `java -jar target/dino.jar` when a runtime behavior check is needed.
+Ao alterar o contrato da engine, valide ambos os repositórios. Atualize o PRD quando houver nova evidência de aceite e o blueprint quando mudar o fluxo real.

@@ -21,22 +21,22 @@ public class Level001 extends Scene
 {
 	GameObject mapa;
 	GameObject player;
-	
+
 	long timeElapsed;
 	long timeLimit = 500;
-	
-	int xAtu = 0; 
+
+	int xAtu = 0;
 	int yAtu = 0;
-	
+
 	List<String> comandos = new ArrayList<>( );
-	
+
 	GameObject sf_comandos;
-	
+
 	String txt_comandos = "Comandos: " + comandos.toString( );
-	
+
 	boolean play = false;
 	private int index = -1;
-	
+
 	@Override
 	public void setup( )
 	{
@@ -53,9 +53,9 @@ public class Level001 extends Scene
 		anim.createAnimation( "run", 0, 3 );
 		anim.createAnimation( "stop", 1, 1 );
 		anim.execute( "stop" );
-		
+
 		player = new GameObject( "plr" );
-		player.addComponente( new Sprite( "hero_sheet", 2 , 2 ) );
+		player.addComponente( new Sprite( "imagens/hero_sheet.png", 2 , 2 ) );
 		player.addComponente( anim );
 		player.addComponente( new AndarEmTile( ) );
 		add( player );
@@ -68,31 +68,31 @@ public class Level001 extends Scene
 				.setSize( 12 )
 				.setText( txt_comandos )
 				.build( );
-		
+
 		add( sf_comandos );
 	}
 
 	private void criarMapa() {
 		mapa = new GameObject( "mapa" );
-		
+
 		Mapa tile_map = new Mapa( 10, 10 );
 		mapa.addComponente( tile_map );
 		add( mapa );
 	}
-	
+
 	@Override
-	public void update(long time) 
+	public void update(long time)
 	{
 		super.update(time);
 
 		KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
-		
+
 		if( play )
 		{
 			Vector2 to = mapa.getComponent( Mapa.class ).calcularTile( player, xAtu, yAtu );
-			
-			player.getComponent( AndarEmTile.class ).mover( to, new Vector2( 1, 1 ) );
-			
+
+			player.getComponent( AndarEmTile.class ).mover( to, new Vector2( 60, 60 ) );
+
 			if( !player.getPosition().equals( to ) )
 			{
 				player.getComponent( Animator.class ).execute( "run" );
@@ -112,7 +112,7 @@ public class Level001 extends Scene
 					timeElapsed = 0;
 				}
 			});
-			
+
 			KeyBoard.infInstace().ifKeyPressed( KeyCode.UP, ()->{
 				if( timeElapsed > timeLimit )
 				{
@@ -120,7 +120,7 @@ public class Level001 extends Scene
 					timeElapsed = 0;
 				}
 			});
-			
+
 			KeyBoard.infInstace().ifKeyPressed( KeyCode.RIGHT, ()->{
 				if( timeElapsed > timeLimit )
 				{
@@ -128,7 +128,7 @@ public class Level001 extends Scene
 					timeElapsed = 0;
 				}
 			});
-			
+
 			KeyBoard.infInstace().ifKeyPressed( KeyCode.LEFT, ()->{
 				if( timeElapsed > timeLimit )
 				{
@@ -136,28 +136,28 @@ public class Level001 extends Scene
 					timeElapsed = 0;
 				}
 			});
-			
+
 			KeyBoard.infInstace().ifKeyPressed( KeyCode.SPACE, ()->{
 				if( timeElapsed > timeLimit )
 				{
 					play = !play;
-					
+
 					timeElapsed = 0;
 				}
 			});
 		}
-		
+
 		atualizarSfComandos( );
-		
+
 		timeElapsed += time;
 	}
-	
+
 	private void irParaProximoComando( )
 	{
 		if( (index+1) < comandos.size( ) )
 		{
 			String comando = comandos.get( ++index );
-			
+
 			switch( comando )
 			{
 				case "UP":
@@ -182,7 +182,7 @@ public class Level001 extends Scene
 		{
 			return eixo + incremento;
 		}
-		
+
 		return eixo;
 	}
 

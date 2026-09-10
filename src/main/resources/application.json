@@ -6,22 +6,22 @@
     [
         {
             "scene": "br.com.game.niveis.examples.Menu",
-            "type": "java"
+            "type": "java", "title": "Menu", "menu": true
         },{
             "scene": "br.com.game.niveis.examples.Spaceship",
-            "type": "java"
+            "type": "java", "title": "Spaceship", "menu": true
         },{
             "scene": "br.com.game.niveis.examples.QuedaLivre",
-            "type": "java"
+            "type": "java", "title": "Queda Livre", "menu": true
         },{
             "scene": "br.com.game.niveis.examples.Level001",
-            "type": "java"
+            "type": "java", "title": "Level 001", "menu": true
         },{
             "scene": "br.com.game.niveis.examples.Level002",
-            "type": "java"
+            "type": "java", "title": "Level 002", "menu": true
         },{
             "scene": "br.com.game.niveis.examples.TiledMapGame",
-            "type": "java"
+            "type": "java", "title": "Tiled Map", "menu": true
         }
     ]
 }

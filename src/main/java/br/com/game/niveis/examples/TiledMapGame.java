@@ -16,7 +16,7 @@ public class TiledMapGame extends Scene {
         super.setup();
 
         GameObject mapa = new GameObject();
-        mapa.addComponente(new TmxMap("ola_mapa"));
+        mapa.addComponente(new TmxMap("mapas/ola_mapa.tmx"));
 
         add(mapa);
     }
@@ -28,19 +28,19 @@ public class TiledMapGame extends Scene {
 
         KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 
-        KeyBoard.infInstace().ifKeyPressed( KeyCode.D, ()-> 
+        KeyBoard.infInstace().ifKeyPressed( KeyCode.D, ()->
 			getObject("default_camera").getPosition().plus(velocidadeCamera, 0f) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.A, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.A, ()->
 			getObject("default_camera").getPosition().less(velocidadeCamera, 0f) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.W, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.W, ()->
 			getObject("default_camera").getPosition().less(0f, velocidadeCamera) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.S, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.S, ()->
 			getObject("default_camera").getPosition().plus(0f, velocidadeCamera) );
-		
-		KeyBoard.infInstace().ifKeyPressed( KeyCode.SPACE, ()-> 
+
+		KeyBoard.infInstace().ifKeyPressed( KeyCode.SPACE, ()->
 			getObject("default_camera").getPosition().setPosition(0f, 0f) );
     }
 }
