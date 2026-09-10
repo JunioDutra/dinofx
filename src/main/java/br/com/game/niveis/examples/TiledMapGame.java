@@ -9,7 +9,7 @@ import br.com.engine.input.KeyCode;
 
 public class TiledMapGame extends Scene {
 
-    private final float velocidadeCamera = 10;
+    private final float velocidadeCameraPorSegundo = 600;
 
     @Override
     public void setup() {
@@ -24,6 +24,7 @@ public class TiledMapGame extends Scene {
     @Override
     public void update(long time) {
         super.update(time);
+        float velocidadeCamera = velocidadeCameraPorSegundo * br.com.engine.core.Time.getDeltaTime( );
 
         KeyBoard.infInstace().ifKeyPressed( KeyCode.ESCAPE, ()-> ControleBase.getInstance().goToBootScene() );
 
