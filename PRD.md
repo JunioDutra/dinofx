@@ -1,6 +1,6 @@
 # PRD — dinofx
 
-Atualizado em 10/09/2026. Estado e próximos passos do jogo de exemplos consumidor da EngineFX.
+Atualizado em 12/09/2026. Estado e próximos passos do jogo de exemplos consumidor da EngineFX.
 
 ## Objetivo
 
@@ -10,10 +10,11 @@ Demonstrar a engine 2D em cenas pequenas e reproduzíveis, permitindo validar sp
 
 | Frente | Estado |
 | --- | --- |
-| Consumo da EngineFX 2.0.0 | Implementado |
+| Consumo da EngineFX 2.1.0 | Implementado |
 | JAR executável com assets e provedor Nashorn | Implementado e exercitado fora do checkout |
 | Caminhos explícitos de recursos | Migrados nas cenas ativas |
-| Menu gerado pelos metadados | Implementado e testado, incluindo cenas ocultas |
+| Menu gerado pelos metadados | Implementado e testado, incluindo cenas ocultas e acionamentos por borda sem bloqueio temporal |
+| Execução no JDK 25 | Validada no 25.0.2: 5 testes e smoke integrado FIFO; instalação limpa e CI pendentes |
 | Movimento de tiles por segundo | Implementado e testado em 30/60/144 Hz |
 | Inscrição de mouse pertencente à cena | Implementado |
 | Build integrado e documentos principais | Implementado |
@@ -41,7 +42,7 @@ Expandir testes para a fila de comandos de Level001, navegação completa do men
 
 ### 3. Consolidar distribuição e exemplo de desenvolvimento
 
-Adicionar CI, validar execução no JDK 25 e criar distribuição com runtime empacotado. Documentar um minijogo construído a partir de configuração, uma cena e alguns assets.
+Adicionar CI em JDK 25, validar instalação limpa e criar distribuição com runtime empacotado. Documentar um minijogo construído a partir de configuração, uma cena e alguns assets.
 
 Novos formatos TMX, Unicode completo e outros sistemas operacionais dependem da evolução da engine e devem manter critérios de integração explícitos.
 
@@ -49,4 +50,4 @@ Novos formatos TMX, Unicode completo e outros sistemas operacionais dependem da 
 
 O roadmap Vulkan detalhado pertence à engine. Testes offscreen, lifetime avançado de swapchain, pools e uploads são responsabilidades dela. O jogo fornece cenários de aceite e deve ser testado junto a mudanças de contrato.
 
-[REVIEW.md](REVIEW.md) registra exatamente o que foi executado. Não inferir estabilidade de sessão longa, suporte multiplataforma ou ausência de flicker a partir dos testes unitários.
+O [review EngineFX 2.1](docs/reviews/2026-09-12-enginefx-2.1.md) registra a validação atual; [REVIEW.md](REVIEW.md) preserva a anterior. Não inferir estabilidade de sessão longa, suporte multiplataforma ou ausência de flicker a partir dos testes unitários.

@@ -22,7 +22,6 @@ public class Menu extends Scene
     private int current;
     private final List<SpriteFont> fonts = new ArrayList<>();
     private List<Integer> sceneIndices = List.of();
-    private long elapsedTransitionTime;
 
     static List<Integer> visibleSceneIndices(List<ScenesDefinition> definitions)
     {
@@ -67,25 +66,24 @@ public class Menu extends Scene
 
     private void select(int direction)
     {
-        if (elapsedTransitionTime < 100 || sceneIndices.isEmpty()) return;
+        if (sceneIndices.isEmpty()) return;
         current = Math.floorMod(current + direction, sceneIndices.size());
-        elapsedTransitionTime = 0;
     }
 
     @Override public void update(long time)
     {
         super.update(time);
-        elapsedTransitionTime += time;
         if (!isInitializedBGSound)
         {
             bgSound.setVolume(0.1);
             bgSound.play();
             isInitializedBGSound = true;
         }
-        KeyBoard.infInstace().ifKeyPressed(KeyCode.DOWN, () -> select(1));
-        KeyBoard.infInstace().ifKeyPressed(KeyCode.UP, () -> select(-1));
-        KeyBoard.infInstace().ifKeyPressed(KeyCode.ENTER, () -> {
+        KeyBoard keyboard = KeyBoard.infInstace();
+        if (keyboard.wasPressedThisFrame(KeyCode.DOWN)) select(1);
+        if (keyboard.wasPressedThisFrame(KeyCode.UP)) select(-1);
+        if (keyboard.wasPressedThisFrame(KeyCode.ENTER)) {
             if (!sceneIndices.isEmpty()) ControleBase.getInstance().nextScene(sceneIndices.get(current));
-        });
+        }
     }
 }

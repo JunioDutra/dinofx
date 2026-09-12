@@ -1,10 +1,10 @@
 # BluePrint — dinofx
 
-Atualizado em 10/09/2026. Este documento descreve a implementação; [PRD.md](PRD.md) acompanha trabalho futuro.
+Atualizado em 12/09/2026. Este documento descreve a implementação; [PRD.md](PRD.md) acompanha trabalho futuro.
 
 ## Arquitetura
 
-Aplicação Java 25/Maven baseada em cenas e composição de componentes. Depende de `enginefx:enginefx:2.0.0`; não implementa um renderer próprio. A engine fornece GLFW/Vulkan, input, tempo, recursos, áudio, texto, colisão e lifecycle.
+Aplicação Java 25/Maven baseada em cenas e composição de componentes. Depende de `enginefx:enginefx:2.1.0`; não implementa um renderer próprio. A engine fornece GLFW/Vulkan, input, tempo, recursos, áudio, texto, colisão e lifecycle.
 
 ```mermaid
 flowchart TD
@@ -41,7 +41,7 @@ O script usa POMs absolutos derivados de `PSScriptRoot`, sem presumir CWD ou JDK
 
 `application.json` fornece tamanho lógico, debug e a lista ordenada de cenas. Cada definição tem classe/recurso, tipo, título opcional e inclusão no menu. `Menu` é `@Bootable`.
 
-O menu gera as entradas visíveis e guarda os índices originais das definições. Assim, ocultar uma cena não direciona Enter para outra. Configurações antigas sem `menu` continuam visíveis. Navegação usa repetição temporizada e limites antes da seleção.
+O menu gera as entradas visíveis e guarda os índices originais das definições. Assim, ocultar uma cena não direciona Enter para outra. Configurações antigas sem `menu` continuam visíveis. Navegação usa bordas de teclado: cada acionamento seleciona uma vez, sem repetição ao manter a tecla e sem intervalo mínimo entre pressões.
 
 Trocas são diferidas por `ControleBase.nextScene`. A engine descarta a visita anterior e instancia outra; câmera e relógio são reiniciados.
 
@@ -72,11 +72,11 @@ O tamanho lógico é 680 × 650 na configuração atual. Resize altera a superf�
 ## Testes e limites
 
 - `AndarEmTileTest`: movimento positivo/negativo a 30/60/144 chamadas por segundo, chegada sem ultrapassar o alvo, cópia de alvo e velocidade inválida.
-- `MenuTest`: mapeamento com cenas ocultas e metadados ausentes.
+- `MenuTest`: mapeamento com cenas ocultas/metadados ausentes e navegação pelo update real, incluindo pressões em menos de 100 ms e tecla mantida.
 - `GameMigrationSmokeApp`: inicializa GLFW/Vulkan, testa Nashorn e cache do JAR, cresce um buffer GPU, visita cenas repetidamente e força resize.
 - O harness valida intervalos inclusivos de cenas; intervalo vazio/invertido é erro, não sucesso.
 
-O smoke usa 120 frames por cena em duas passagens e não simula gameplay completo nem compara pixels. A validação local é registrada em [REVIEW.md](REVIEW.md), com limites de driver/superfície.
+O smoke usa 120 frames por cena em duas passagens e não simula gameplay completo nem compara pixels. A validação atual está no [review EngineFX 2.1](docs/reviews/2026-09-12-enginefx-2.1.md); [REVIEW.md](REVIEW.md) preserva a evidência histórica.
 
 ## Como evoluir
 
