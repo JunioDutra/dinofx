@@ -22,4 +22,4 @@ Logs locais em `../.review/blocos4-5/` a partir da raiz do checkout. O harness e
 
 ## Limites
 
-A etapa 1C está validada no JVM/JAR. O bootstrap ainda usa o adaptador reflexivo transitório; sua remoção e o Native Image integrado pertencem à 1D. Não houve aceite visual por pixels, gameplay manual, MAILBOX, validation layers, sessão prolongada, instalação sem cache ou teste multiplataforma. A prova nativa isolada anterior não comprova esse runtime integrado.
+A etapa 1C está validada no JVM/JAR. O estado posterior da 1D está no review da engine: DinoFX passou a expor ids estáveis em `Main.scenes()` e não fornece nomes de classes ao bootstrap. A execução Native Image integrada aguarda o job Windows/GraalVM; continuam pendentes aceite visual por pixels, gameplay manual, MAILBOX, validation layers, sessão prolongada, instalação limpa e teste multiplataforma.

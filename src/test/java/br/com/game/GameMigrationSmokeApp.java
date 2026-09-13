@@ -1,6 +1,8 @@
 package br.com.game;
 
 import br.com.engine.core.ControleBase;
+import br.com.engine.core.SceneRegistry;
+import br.com.engine.main.RuntimeProfile;
 import br.com.engine.platform.lwjgl.*;
 import br.com.engine.resources.ResourceManager;
 import br.com.game.niveis.examples.LuaHiddenDemo;
@@ -12,17 +14,19 @@ public final class GameMigrationSmokeApp
 {
     public static void main(String[] args) throws Exception
     {
-        System.setProperty("org.lwjgl.system.memoryBackend", System.getProperty("org.lwjgl.system.memoryBackend", "ffm"));
+        RuntimeProfile.initialize();
         var callback = GLFWErrorCallback.createPrint(System.err).set();
         ControleBase control = null;
         boolean completed = false;
         int expectedLuaDisposals = 0;
+        SceneRegistry scenes = Main.scenes();
         try
         {
             if (!glfwInit()) throw new IllegalStateException("GLFW initialization failed");
             var image = ResourceManager.image("imagens/hero_sheet.png");
             if (image != ResourceManager.image("imagens/hero_sheet.png")) throw new AssertionError("Packaged image cache failed");
             control = ControleBase.getInstance();
+            control.setSceneRegistry(scenes);
             LuaHiddenDemo.resetSmokeEvidence();
             int sceneCount = control.getConfigurations().getScenes().size();
             int firstScene = Integer.getInteger("enginefx.smoke.firstScene", 0);
@@ -66,7 +70,18 @@ public final class GameMigrationSmokeApp
                             renderer.drawFrame(graphics);
                         }
                         String expected = control.getConfigurations().getScenes().get(scene).getScene();
-                        if (!control.getCurrentScene().getClass().getName().equals(expected)) throw new AssertionError("Scene did not load: " + expected);
+                        Class<?> expectedType = switch (expected) {
+                            case "dinofx:menu" -> br.com.game.niveis.examples.Menu.class;
+                            case "dinofx:spaceship" -> br.com.game.niveis.examples.Spaceship.class;
+                            case "dinofx:free-fall" -> br.com.game.niveis.examples.QuedaLivre.class;
+                            case "dinofx:level-001" -> br.com.game.niveis.examples.Level001.class;
+                            case "dinofx:level-002" -> br.com.game.niveis.examples.Level002.class;
+                            case "dinofx:tiled-map" -> br.com.game.niveis.examples.TiledMapGame.class;
+                            case "dinofx:lua-hidden-demo" -> br.com.game.niveis.examples.LuaHiddenDemo.class;
+                            default -> throw new AssertionError("Unknown smoke scene: " + expected);
+                        };
+                        if (control.getCurrentScene().getClass() != expectedType)
+                            throw new AssertionError("Wrong scene loaded for " + expected);
                         if (control.getCurrentScene() instanceof LuaHiddenDemo demo)
                         {
                             demo.assertLuaCallbacks();

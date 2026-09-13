@@ -1,6 +1,6 @@
 # BluePrint — dinofx
 
-Atualizado em 12/09/2026. Este documento descreve a implementação; [PRD.md](PRD.md) acompanha trabalho futuro.
+Atualizado em 13/09/2026. Este documento descreve a implementação; [PRD.md](PRD.md) acompanha trabalho futuro.
 
 ## Arquitetura
 
@@ -39,7 +39,7 @@ O script usa POMs absolutos derivados de `PSScriptRoot`, sem presumir CWD ou JDK
 
 ## Registro e navegação
 
-`application.json` fornece tamanho lógico, debug e a lista ordenada de cenas. Cada definição tem classe/recurso, tipo, título opcional e inclusão no menu. `Menu` é `@Bootable`.
+`application.json` fornece tamanho lógico, debug e a lista ordenada de ids de cena, título opcional e inclusão no menu. `Main.scenes()` associa cada id à sua factory; `bootScene` é `dinofx:menu`. Nem `@Bootable`, nem `type`, nem nome de classe participam do bootstrap.
 
 O menu gera as entradas visíveis e guarda os índices originais das definições. Assim, ocultar uma cena não direciona Enter para outra. Configurações antigas sem `menu` continuam visíveis. Navegação usa bordas de teclado: cada acionamento seleciona uma vez, sem repetição ao manter a tecla e sem intervalo mínimo entre pressões.
 
@@ -77,7 +77,7 @@ O tamanho lógico é 680 × 650 na configuração atual. Resize altera a superf�
 - `GameMigrationSmokeApp`: inicializa GLFW/Vulkan, testa cache e Lua no JAR, cresce um buffer GPU, visita cenas repetidamente e força resize.
 - O harness valida intervalos inclusivos de cenas; intervalo vazio/invertido é erro, não sucesso.
 
-O smoke usa 120 frames por cena em duas passagens e não simula gameplay completo nem compara pixels. A validação atual está no [review EngineFX 3.0](docs/reviews/2026-09-13-lua-blocks-review.md); [REVIEW.md](REVIEW.md) preserva a evidência histórica.
+O smoke usa 120 frames por cena em duas passagens e não simula gameplay completo nem compara pixels. A validação atual está no [review EngineFX 3.0](docs/reviews/2026-09-13-lua-blocks-review.md); o contrato de bootstrap Native Image está no [review 1D da engine](../enginefx/docs/reviews/2026-09-13-native-bootstrap.md); [REVIEW.md](REVIEW.md) preserva a evidência histórica.
 
 ## Como evoluir
 

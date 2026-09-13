@@ -71,9 +71,12 @@ java --enable-native-access=ALL-UNNAMED '-Denginefx.smoke.hidden=true' '-Dengine
 
 1. Adicione a classe em `src/main/java/br/com/game/niveis`, derivando de `Scene`.
 2. Chame `super.setup()` para criar a câmera padrão e adicione os objetos/componentes.
-3. Registre a classe em `application.json` com `type: "java"`, `title` e `menu`.
+3. Registre uma factory com id estável em `Main.scenes()` e use o mesmo id em `application.json`, com `title` e `menu`.
 4. Use caminhos completos relativos a `res/`, como `imagens/player.png`, `fonts/font.ttf` e `mapas/level.tmx`.
 5. Coloque comportamento reutilizável em `br.com.game.script`; use `fixedUpdate(float)` para movimento físico em pixels/segundo.
 6. Rode testes e smoke com recursos empacotados. O exemplo Lua empacotado está em `scripts/hidden_demo.lua`; ele não aparece no menu e existe para o smoke validar carregamento, callback e descarte.
 
-A migração está funcional em FIFO no ambiente validado, mas o aceite visual e de driver permanece pendente; veja [PRD.md](PRD.md).
+A migração está funcional em FIFO no ambiente validado, mas o aceite visual e de driver permanece pendente; veja [PRD.md](PRD.md). O bootstrap não resolve nomes de classes: toda cena do JSON deve existir em `Main.scenes()`.
+
+
+O [review do bootstrap 1D](docs/reviews/2026-09-13-native-bootstrap-review.md) registra a validação atual com ids/factories explícitos e verificação das cenas carregadas. A distribuição do DinoFX neste checkpoint é JVM/JAR.

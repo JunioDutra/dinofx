@@ -1,6 +1,6 @@
 # PRD — dinofx
 
-Atualizado em 12/09/2026. Estado e próximos passos do jogo de exemplos consumidor da EngineFX.
+Atualizado em 13/09/2026. Estado e próximos passos do jogo de exemplos consumidor da EngineFX.
 
 ## Objetivo
 
@@ -11,6 +11,7 @@ Demonstrar a engine 2D em cenas pequenas e reproduzíveis, permitindo validar sp
 | Frente | Estado |
 | --- | --- |
 | Consumo da EngineFX 3.0.0 | Implementado |
+| Registro de cenas sem reflexão | Implementado | `Main.scenes()` associa os ids estáveis de `application.json` às factories Java; testes JVM aprovados |
 | JAR executável com assets e Lua 5.4 | Implementado e exercitado fora do checkout |
 | Caminhos explícitos de recursos | Migrados nas cenas ativas |
 | Menu gerado pelos metadados | Implementado e testado, incluindo cenas ocultas e acionamentos por borda sem bloqueio temporal |
@@ -51,3 +52,6 @@ Novos formatos TMX, Unicode completo e outros sistemas operacionais dependem da 
 O roadmap Vulkan detalhado pertence à engine. Testes offscreen, lifetime avançado de swapchain, pools e uploads são responsabilidades dela. O jogo fornece cenários de aceite e deve ser testado junto a mudanças de contrato.
 
 O [review EngineFX 3.0](docs/reviews/2026-09-13-lua-blocks-review.md) registra a validação atual; [REVIEW.md](REVIEW.md) preserva a anterior. Não inferir estabilidade de sessão longa, suporte multiplataforma ou ausência de flicker a partir dos testes unitários.
+
+
+A revisão atual do bootstrap está no [review 1D do consumidor](docs/reviews/2026-09-13-native-bootstrap-review.md). A engine já passou no gate Native Image integrado; o jogo continua validado como JAR JVM.

@@ -4,7 +4,7 @@
 
 Jogo de exemplos que consome `enginefx:enginefx:3.0.0`. Leia [README.md](README.md), [BluePrint.md](BluePrint.md), [PRD.md](PRD.md) e [REVIEW.md](REVIEW.md).
 
-O ponto de entrada [Main.java](src/main/java/br/com/game/Main.java) apenas chama `Executor.loadGame(args)`. Comportamento de inicialização é definido por [application.json](src/main/resources/application.json) e pelas cenas.
+O ponto de entrada [Main.java](src/main/java/br/com/game/Main.java) constrói `SceneRegistry` e chama `Executor.loadGame(args, scenes)`. Os ids de [application.json](src/main/resources/application.json) precisam corresponder às factories de `Main.scenes()`; não use nome de classe no JSON.
 
 ## Build e validação
 

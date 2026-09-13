@@ -6,9 +6,7 @@ import br.com.engine.componentes.drawable.Sprite;
 import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Vector2;
-import br.com.engine.core.annotation.Bootable;
 
-@Bootable
 public class Mapa extends SimpleComponent
 {
 	private final int countx;

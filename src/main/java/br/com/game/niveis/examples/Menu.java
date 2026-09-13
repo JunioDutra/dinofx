@@ -8,13 +8,11 @@ import br.com.engine.componentes.drawable.SpriteFont;
 import br.com.engine.core.ControleBase;
 import br.com.engine.core.GameObject;
 import br.com.engine.core.Scene;
-import br.com.engine.core.annotation.Bootable;
 import br.com.engine.graphics.Color;
 import br.com.engine.input.KeyBoard;
 import br.com.engine.input.KeyCode;
 import br.com.engine.resources.ScenesDefinition;
 
-@Bootable
 public class Menu extends Scene
 {
     private boolean isInitializedBGSound;

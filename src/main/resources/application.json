@@ -3,29 +3,30 @@
 	"debugMode": true,
 	"sizeW": 680,
 	"sizeH": 650,
+    "bootScene": "dinofx:menu",
     "scenes":
     [
         {
-            "scene": "br.com.game.niveis.examples.Menu",
-            "type": "java", "title": "Menu", "menu": true
+            "scene": "dinofx:menu",
+            "title": "Menu", "menu": true
         },{
-            "scene": "br.com.game.niveis.examples.Spaceship",
-            "type": "java", "title": "Spaceship", "menu": true
+            "scene": "dinofx:spaceship",
+            "title": "Spaceship", "menu": true
         },{
-            "scene": "br.com.game.niveis.examples.QuedaLivre",
-            "type": "java", "title": "Queda Livre", "menu": true
+            "scene": "dinofx:free-fall",
+            "title": "Queda Livre", "menu": true
         },{
-            "scene": "br.com.game.niveis.examples.Level001",
-            "type": "java", "title": "Level 001", "menu": true
+            "scene": "dinofx:level-001",
+            "title": "Level 001", "menu": true
         },{
-            "scene": "br.com.game.niveis.examples.Level002",
-            "type": "java", "title": "Level 002", "menu": true
+            "scene": "dinofx:level-002",
+            "title": "Level 002", "menu": true
         },{
-            "scene": "br.com.game.niveis.examples.TiledMapGame",
-            "type": "java", "title": "Tiled Map", "menu": true
+            "scene": "dinofx:tiled-map",
+            "title": "Tiled Map", "menu": true
         },{
-            "scene": "br.com.game.niveis.examples.LuaHiddenDemo",
-            "type": "java", "title": "Lua lifecycle verification", "menu": false
+            "scene": "dinofx:lua-hidden-demo",
+            "title": "Lua lifecycle verification", "menu": false
         }
     ]
 }

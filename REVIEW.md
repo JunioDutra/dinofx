@@ -57,3 +57,12 @@ O smoke do JAR passa pelas sete cenas duas vezes. Em execução focada, a cena L
 ## Revisão dos blocos 1B/1C — 13/09/2026
 
 A [revisão consolidada da 3.0](docs/reviews/2026-09-13-lua-blocks-review.md) registra as correções posteriores: runtime Lua revisado, 61 testes da engine, 5 do consumidor, smoke completo de 1.680 frames e smoke parcial de 240 frames. Foram corrigidos o contador de descartes em seleção parcial e a proteção de setup da demo. Esta evidência substitui os totais preliminares da implementação acima.
+
+## Atualização do bootstrap explícito — 13/09/2026
+
+`application.json` agora declara ids estáveis `dinofx:*`; `Main.scenes()` é o único local que associa esses ids às factories Java. O smoke também entrega o mesmo registry ao controlador antes de inicializar GLFW, preservando o perfil de runtime centralizado da engine. `mvnw.cmd -q test` terminou com 5 testes verdes; `build.ps1 -Smoke -PresentMode fifo` percorreu sete cenas duas vezes, com 1.680 frames, resize, assets do JAR, cache e lifecycle Lua. A compilação/execução Native Image permanece evidência da engine e aguarda GraalVM/MSVC no job Windows.
+
+
+## Revisão do bloco 1D — 13/09/2026
+
+O [review atual do consumidor](docs/reviews/2026-09-13-native-bootstrap-review.md) registra as correções da verificação de cenas e a validação final: 5 testes e 1.680 frames FIFO contra a engine com 69 testes. O gate Native Image integrado da engine passou localmente com GraalVM 25.3.4.1; a afirmação preliminar acima de que aguardava toolchain foi superada. Não houve execução remota do workflow nem build nativo do DinoFX.
