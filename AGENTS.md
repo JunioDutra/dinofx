@@ -2,7 +2,7 @@
 
 ## Escopo
 
-Jogo de exemplos que consome `enginefx:enginefx:2.1.0`. Leia [README.md](README.md), [BluePrint.md](BluePrint.md), [PRD.md](PRD.md) e [REVIEW.md](REVIEW.md).
+Jogo de exemplos que consome `enginefx:enginefx:3.0.0`. Leia [README.md](README.md), [BluePrint.md](BluePrint.md), [PRD.md](PRD.md) e [REVIEW.md](REVIEW.md).
 
 O ponto de entrada [Main.java](src/main/java/br/com/game/Main.java) apenas chama `Executor.loadGame(args)`. Comportamento de inicialização é definido por [application.json](src/main/resources/application.json) e pelas cenas.
 

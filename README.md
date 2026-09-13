@@ -1,6 +1,6 @@
 # dinofx
 
-Jogo de exemplos em Java que usa **EngineFX 2.1.0** com renderização Vulkan. O repositório contém cenas, comportamento do jogo e assets; o backend gráfico e o ciclo de execução ficam na engine.
+Jogo de exemplos em Java que usa **EngineFX 3.0.0** com renderização Vulkan e Lua 5.4 restrita. O repositório contém cenas, comportamento do jogo e assets; o backend gráfico e o ciclo de execução ficam na engine.
 
 ## Documentação
 
@@ -10,7 +10,7 @@ Jogo de exemplos em Java que usa **EngineFX 2.1.0** com renderização Vulkan. O
 | [BluePrint.md](BluePrint.md) | Estrutura e fluxo implementados |
 | [PRD.md](PRD.md) | Andamento e próximos passos |
 | [REVIEW.md](REVIEW.md) | Correções e evidências da revisão da migração |
-| [Review EngineFX 2.1](docs/reviews/2026-09-12-enginefx-2.1.md) | Navegação por bordas e validação atual no JDK 25 |
+| [Review EngineFX 3.0](docs/reviews/2026-09-13-lua-blocks-review.md) | Migração Lua, correções e validação atual no JDK 25 |
 
 ## Executar
 
@@ -57,7 +57,7 @@ Esc retorna ao menu nas cenas de exemplo. Os títulos e a inclusão no menu são
 .\build.ps1 -Smoke -PresentMode fifo
 ```
 
-JUnit cobre movimentos de tile, mapeamento do menu e navegação por acionamento sem repetição ao manter a tecla. O smoke roda as seis cenas duas vezes, com 120 frames por visita, dois resizes por visita, assets do JAR, Nashorn, cache de imagens e crescimento de buffer Vulkan. Ele cria uma pasta vazia para não depender dos assets do checkout.
+JUnit cobre movimentos de tile, mapeamento do menu e navegação por acionamento sem repetição ao manter a tecla. O smoke roda as seis cenas visíveis e a cena Lua oculta duas vezes, com 120 frames por visita, dois resizes por visita, assets do JAR, cache de imagens, lifecycle Lua e crescimento de buffer Vulkan. Ele cria uma pasta vazia para não depender dos assets do checkout.
 
 Para rodar somente parte do harness depois do build, use índices de configuração inclusivos:
 
@@ -74,6 +74,6 @@ java --enable-native-access=ALL-UNNAMED '-Denginefx.smoke.hidden=true' '-Dengine
 3. Registre a classe em `application.json` com `type: "java"`, `title` e `menu`.
 4. Use caminhos completos relativos a `res/`, como `imagens/player.png`, `fonts/font.ttf` e `mapas/level.tmx`.
 5. Coloque comportamento reutilizável em `br.com.game.script`; use `fixedUpdate(float)` para movimento físico em pixels/segundo.
-6. Rode testes e smoke com recursos empacotados.
+6. Rode testes e smoke com recursos empacotados. O exemplo Lua empacotado está em `scripts/hidden_demo.lua`; ele não aparece no menu e existe para o smoke validar carregamento, callback e descarte.
 
 A migração está funcional em FIFO no ambiente validado, mas o aceite visual e de driver permanece pendente; veja [PRD.md](PRD.md).

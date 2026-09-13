@@ -3,6 +3,7 @@ package br.com.game;
 import br.com.engine.core.ControleBase;
 import br.com.engine.platform.lwjgl.*;
 import br.com.engine.resources.ResourceManager;
+import br.com.game.niveis.examples.LuaHiddenDemo;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -14,14 +15,15 @@ public final class GameMigrationSmokeApp
         System.setProperty("org.lwjgl.system.memoryBackend", System.getProperty("org.lwjgl.system.memoryBackend", "ffm"));
         var callback = GLFWErrorCallback.createPrint(System.err).set();
         ControleBase control = null;
+        boolean completed = false;
+        int expectedLuaDisposals = 0;
         try
         {
             if (!glfwInit()) throw new IllegalStateException("GLFW initialization failed");
-            var script = new javax.script.ScriptEngineManager().getEngineByName("nashorn");
-            if (script == null || ((Number)script.eval("6 * 7")).intValue() != 42) throw new AssertionError("Packaged Nashorn provider failed");
             var image = ResourceManager.image("imagens/hero_sheet.png");
             if (image != ResourceManager.image("imagens/hero_sheet.png")) throw new AssertionError("Packaged image cache failed");
             control = ControleBase.getInstance();
+            LuaHiddenDemo.resetSmokeEvidence();
             int sceneCount = control.getConfigurations().getScenes().size();
             int firstScene = Integer.getInteger("enginefx.smoke.firstScene", 0);
             int lastScene = Integer.getInteger("enginefx.smoke.lastScene", sceneCount - 1);
@@ -65,15 +67,26 @@ public final class GameMigrationSmokeApp
                         }
                         String expected = control.getConfigurations().getScenes().get(scene).getScene();
                         if (!control.getCurrentScene().getClass().getName().equals(expected)) throw new AssertionError("Scene did not load: " + expected);
+                        if (control.getCurrentScene() instanceof LuaHiddenDemo demo)
+                        {
+                            demo.assertLuaCallbacks();
+                            expectedLuaDisposals++;
+                        }
                         System.out.println("PASS " + pass + " " + expected);
                     }
                 }
-                System.out.println("PASS migration: " + (lastScene - firstScene + 1) + " scenes twice, packaged assets/cache, Nashorn, vertex growth and resize");
+                completed = true;
+                System.out.println("PASS migration: " + (lastScene - firstScene + 1) + " scenes twice, packaged assets/cache"
+                    + (expectedLuaDisposals > 0 ? ", Lua lifecycle" : "") + ", vertex growth and resize");
             }
         }
         finally
         {
-            try { if (control != null) control.stop(); }
+            try
+            {
+                if (control != null) control.stop();
+                if (completed) LuaHiddenDemo.assertSmokeDisposals(expectedLuaDisposals);
+            }
             finally { glfwTerminate(); glfwSetErrorCallback(null); callback.free(); }
         }
     }

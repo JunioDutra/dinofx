@@ -46,3 +46,14 @@ Para tentar outro modo em ambiente compatível: `-PresentMode mailbox`. A opçã
 O conjunto principal foi organizado em [README.md](README.md), [AGENTS.md](AGENTS.md), [BluePrint.md](BluePrint.md) e [PRD.md](PRD.md). O blueprint antigo foi substituído, com o histórico preservado no Git.
 
 O smoke não verifica cada pixel nem simula o jogo completo. Faltam aceite visual com interação, apresentação em MAILBOX, validation layers, testes longos e unificação da física de QuedaLivre. Esses limites não impedem registrar as correções implementadas, mas impedem declarar concluída toda a migração Vulkan.
+
+## Atualização — EngineFX 3.0 / Etapa 1C (13/09/2026)
+
+O consumidor foi migrado para `enginefx:enginefx:3.0.0`, que remove Nashorn e todas as APIs JavaScript. Foi acrescentada `LuaHiddenDemo`, uma cena `menu: false` que carrega `res/scripts/hidden_demo.lua` por `ClasspathResourceResolver`. Ela usa somente `engine.state`, registra `setup`, recebe `update` em segundos e exige `dispose` antes de fechar o runtime.
+
+O smoke do JAR passa pelas sete cenas duas vezes. Em execução focada, a cena Lua passou as duas visitas a partir da pasta vazia criada pelo build, confirmando carregamento, callback e descarte do módulo. A suíte unitária do DinoFX terminou com 5 testes verdes; a EngineFX 3.0 terminou com 44. A validação visual, MAILBOX e as limitações já registradas continuam inalteradas.
+
+
+## Revisão dos blocos 1B/1C — 13/09/2026
+
+A [revisão consolidada da 3.0](docs/reviews/2026-09-13-lua-blocks-review.md) registra as correções posteriores: runtime Lua revisado, 61 testes da engine, 5 do consumidor, smoke completo de 1.680 frames e smoke parcial de 240 frames. Foram corrigidos o contador de descartes em seleção parcial e a proteção de setup da demo. Esta evidência substitui os totais preliminares da implementação acima.

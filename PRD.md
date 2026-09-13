@@ -10,15 +10,15 @@ Demonstrar a engine 2D em cenas pequenas e reproduzíveis, permitindo validar sp
 
 | Frente | Estado |
 | --- | --- |
-| Consumo da EngineFX 2.1.0 | Implementado |
-| JAR executável com assets e provedor Nashorn | Implementado e exercitado fora do checkout |
+| Consumo da EngineFX 3.0.0 | Implementado |
+| JAR executável com assets e Lua 5.4 | Implementado e exercitado fora do checkout |
 | Caminhos explícitos de recursos | Migrados nas cenas ativas |
 | Menu gerado pelos metadados | Implementado e testado, incluindo cenas ocultas e acionamentos por borda sem bloqueio temporal |
 | Execução no JDK 25 | Validada no 25.0.2: 5 testes e smoke integrado FIFO; instalação limpa e CI pendentes |
 | Movimento de tiles por segundo | Implementado e testado em 30/60/144 Hz |
 | Inscrição de mouse pertencente à cena | Implementado |
 | Build integrado e documentos principais | Implementado |
-| Smoke das seis cenas em FIFO | Aprovado no ambiente registrado no review |
+| Smoke das seis cenas visíveis e uma Lua oculta em FIFO | Aprovado no ambiente registrado no review |
 | Aceite visual, MAILBOX e camada Khronos | Pendente por cobertura/ambiente |
 | Física uniforme em todos os exemplos | Pendente; QuedaLivre ainda possui integração própria |
 
@@ -50,4 +50,4 @@ Novos formatos TMX, Unicode completo e outros sistemas operacionais dependem da 
 
 O roadmap Vulkan detalhado pertence à engine. Testes offscreen, lifetime avançado de swapchain, pools e uploads são responsabilidades dela. O jogo fornece cenários de aceite e deve ser testado junto a mudanças de contrato.
 
-O [review EngineFX 2.1](docs/reviews/2026-09-12-enginefx-2.1.md) registra a validação atual; [REVIEW.md](REVIEW.md) preserva a anterior. Não inferir estabilidade de sessão longa, suporte multiplataforma ou ausência de flicker a partir dos testes unitários.
+O [review EngineFX 3.0](docs/reviews/2026-09-13-lua-blocks-review.md) registra a validação atual; [REVIEW.md](REVIEW.md) preserva a anterior. Não inferir estabilidade de sessão longa, suporte multiplataforma ou ausência de flicker a partir dos testes unitários.

@@ -23,6 +23,9 @@
         },{
             "scene": "br.com.game.niveis.examples.TiledMapGame",
             "type": "java", "title": "Tiled Map", "menu": true
+        },{
+            "scene": "br.com.game.niveis.examples.LuaHiddenDemo",
+            "type": "java", "title": "Lua lifecycle verification", "menu": false
         }
     ]
 }

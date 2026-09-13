@@ -4,7 +4,7 @@ Atualizado em 12/09/2026. Este documento descreve a implementação; [PRD.md](PR
 
 ## Arquitetura
 
-Aplicação Java 25/Maven baseada em cenas e composição de componentes. Depende de `enginefx:enginefx:2.1.0`; não implementa um renderer próprio. A engine fornece GLFW/Vulkan, input, tempo, recursos, áudio, texto, colisão e lifecycle.
+Aplicação Java 25/Maven baseada em cenas e composição de componentes. Depende de `enginefx:enginefx:3.0.0`; não implementa um renderer próprio. A engine fornece GLFW/Vulkan, input, tempo, recursos, áudio, texto, colisão, lifecycle e Lua 5.4 restrita.
 
 ```mermaid
 flowchart TD
@@ -33,7 +33,7 @@ Não há servidor, banco de dados, rede, framework de injeção ou camada de per
 | `src/test/java/` | Testes unitários e harness Vulkan |
 | [build.ps1](build.ps1) | Instala a engine irmã, empacota e opcionalmente executa smoke |
 
-O shade produz `target/dino.jar`, com classe principal `br.com.game.Main`, manifesto Multi-Release e merge de `META-INF/services` para Nashorn. Assets entram em `res/` dentro do JAR. Descritores de módulo duplicados são excluídos porque a distribuição roda no classpath.
+O shade produz `target/dino.jar`, com classe principal `br.com.game.Main` e manifesto Multi-Release. Assets, incluindo o módulo Lua de smoke, entram em `res/` dentro do JAR. Não há merge de serviços: Nashorn não faz parte da 3.0. Descritores de módulo duplicados são excluídos porque a distribuição roda no classpath.
 
 O script usa POMs absolutos derivados de `PSScriptRoot`, sem presumir CWD ou JDK específico. Maven vem do wrapper com distribuição/versionamento e checksum fixados.
 
@@ -55,6 +55,7 @@ Trocas são diferidas por `ControleBase.nextScene`. A engine descarta a visita a
 | Level001 | Fila de comandos e deslocamento na grade, a 60 pixels/s |
 | Level002 | Mapa TMX, movimentação em tiles a 600 pixels/s e câmera |
 | TiledMapGame | Visualização do TMX e navegação da câmera |
+| LuaHiddenDemo | Cena não exibida no menu; carrega `scripts/hidden_demo.lua` do JAR e comprova lifecycle Lua no smoke |
 | Mapa | Conversão entre coordenadas da grade e posição de objetos |
 
 `AndarEmTile` copia alvo e velocidade, avança cada eixo por `speed * deltaSeconds` no passo fixo e limita o deslocamento para chegar exatamente ao alvo. Aceita movimento em ambos os sinais, sem alterar os vetores fornecidos pelo chamador.
@@ -73,10 +74,10 @@ O tamanho lógico é 680 × 650 na configuração atual. Resize altera a superf�
 
 - `AndarEmTileTest`: movimento positivo/negativo a 30/60/144 chamadas por segundo, chegada sem ultrapassar o alvo, cópia de alvo e velocidade inválida.
 - `MenuTest`: mapeamento com cenas ocultas/metadados ausentes e navegação pelo update real, incluindo pressões em menos de 100 ms e tecla mantida.
-- `GameMigrationSmokeApp`: inicializa GLFW/Vulkan, testa Nashorn e cache do JAR, cresce um buffer GPU, visita cenas repetidamente e força resize.
+- `GameMigrationSmokeApp`: inicializa GLFW/Vulkan, testa cache e Lua no JAR, cresce um buffer GPU, visita cenas repetidamente e força resize.
 - O harness valida intervalos inclusivos de cenas; intervalo vazio/invertido é erro, não sucesso.
 
-O smoke usa 120 frames por cena em duas passagens e não simula gameplay completo nem compara pixels. A validação atual está no [review EngineFX 2.1](docs/reviews/2026-09-12-enginefx-2.1.md); [REVIEW.md](REVIEW.md) preserva a evidência histórica.
+O smoke usa 120 frames por cena em duas passagens e não simula gameplay completo nem compara pixels. A validação atual está no [review EngineFX 3.0](docs/reviews/2026-09-13-lua-blocks-review.md); [REVIEW.md](REVIEW.md) preserva a evidência histórica.
 
 ## Como evoluir
 
