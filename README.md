@@ -1,6 +1,6 @@
 # dinofx
 
-Jogo de exemplos em Java que usa **EngineFX 3.0.0** com renderização Vulkan e Lua 5.4 restrita. O repositório contém cenas, comportamento do jogo e assets; o backend gráfico e o ciclo de execução ficam na engine.
+Jogo de exemplos em Java que usa **EngineFX 3.1.0** com renderização Vulkan e Lua 5.4 restrita. O repositório contém cenas, comportamento do jogo e assets; o backend gráfico e o ciclo de execução ficam na engine.
 
 ## Documentação
 

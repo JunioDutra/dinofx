@@ -66,3 +66,8 @@ A [revisão consolidada da 3.0](docs/reviews/2026-09-13-lua-blocks-review.md) re
 ## Revisão do bloco 1D — 13/09/2026
 
 O [review atual do consumidor](docs/reviews/2026-09-13-native-bootstrap-review.md) registra as correções da verificação de cenas e a validação final: 5 testes e 1.680 frames FIFO contra a engine com 69 testes. O gate Native Image integrado da engine passou localmente com GraalVM 25.3.4.1; a afirmação preliminar acima de que aguardava toolchain foi superada. Não houve execução remota do workflow nem build nativo do DinoFX.
+
+
+## Revisão integrada de gameplay — 14/09/2026
+
+Consumo da EngineFX 3.1.0 confirmado com 5 testes e `build.ps1 -Smoke -PresentMode fifo`: sete cenas duas vezes, 1.680 frames, assets, Lua, resize e crescimento de buffer. A engine passou 74 testes, preserva escala explícita de sprites e permite resize/maximize com proporção mantida e mouse remapeado. A revisão detalhada está no repositório irmão `enginefx/docs/reviews/2026-09-14-gameplay.md`. Gameplay manual de todos os exemplos, drivers adicionais e publicação permanecem pendentes.

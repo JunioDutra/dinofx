@@ -10,7 +10,7 @@ Demonstrar a engine 2D em cenas pequenas e reproduzíveis, permitindo validar sp
 
 | Frente | Estado |
 | --- | --- |
-| Consumo da EngineFX 3.0.0 | Implementado |
+| Consumo da EngineFX 3.1.0 | Preparado localmente; publicação pendente |
 | Registro de cenas sem reflexão | Implementado | `Main.scenes()` associa os ids estáveis de `application.json` às factories Java; testes JVM aprovados |
 | JAR executável com assets e Lua 5.4 | Implementado e exercitado fora do checkout |
 | Caminhos explícitos de recursos | Migrados nas cenas ativas |

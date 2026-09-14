@@ -4,7 +4,7 @@ Atualizado em 13/09/2026. Este documento descreve a implementação; [PRD.md](PR
 
 ## Arquitetura
 
-Aplicação Java 25/Maven baseada em cenas e composição de componentes. Depende de `enginefx:enginefx:3.0.0`; não implementa um renderer próprio. A engine fornece GLFW/Vulkan, input, tempo, recursos, áudio, texto, colisão, lifecycle e Lua 5.4 restrita.
+Aplicação Java 25/Maven baseada em cenas e composição de componentes. Depende de `enginefx:enginefx:3.1.0`; não implementa um renderer próprio. A engine fornece GLFW/Vulkan, input, tempo, recursos, áudio, texto, colisão, lifecycle e Lua 5.4 restrita.
 
 ```mermaid
 flowchart TD
